@@ -10,6 +10,7 @@ contract Widgets is AragonApp {
     event WidgetAdded();
     event WidgetRemoved();
     event WidgetsReordered();
+    event WidgetUpdated();
 
     /// Struct
     struct Widget {
@@ -32,14 +33,25 @@ contract Widgets is AragonApp {
      * @notice Add a widget's IPFS hash to the registry
      * @param _addr IPFS hash of the widget's data
      */
-    function addWidget(string _addr) auth(MODIFIER_ROLE) external {
+    function addWidget(string _addr) external auth(MODIFIER_ROLE) {
         widgets.push(Widget(_addr, false));
         emit WidgetAdded();
     }
 
     /**
+     * @notice Update a widget's IPFS hash
+     * @param _priority Index of the widget
+     * @param _addr IPFS hash of the widget's data
+     */
+    function updateWidget(uint _priority, string _addr) external auth(MODIFIER_ROLE) {
+        Widget storage widget = widgets[_priority];
+        widget.addr = _addr;
+        emit WidgetUpdated();
+    }
+
+    /**
      * @notice Remove a widget from the registry
-     * @param _priority IPFS hash of the widget's data
+     * @param _priority Index of the widget
      */
     function removeWidget(uint _priority) external auth(MODIFIER_ROLE) {
         Widget storage widget = widgets[_priority];
