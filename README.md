@@ -1,17 +1,4 @@
-# Aragon React Boilerplate
-
-> 🕵️ [Find more boilerplates using GitHub](https://github.com/search?q=topic:aragon-boilerplate) | 
-> ✨ [Official boilerplates](https://github.com/search?q=topic:aragon-boilerplate+org:aragon)
-
-React boilerplate for Aragon applications.
-
-This boilerplate also includes a fully working example app, complete with a background worker and a front-end in React (with Aragon UI).
-
-## Usage
-
-```sh
-aragon init app.aragonpm.eth react
-```
+# Widgets App
 
 ## Running your app
 
@@ -98,7 +85,7 @@ Sample output:
 ```
  > aragon apm publish major "--environment" "staging"
 
- ✔ Successfully published app.open.aragonpm.eth v1.0.0: 
+ ✔ Successfully published app.open.aragonpm.eth v1.0.0:
  ℹ Contract address: 0xE636bcA5B95e94F749F63E322a04DB59362299F1
  ℹ Content (ipfs): QmR695Wu5KrHNec7pRP3kPvwYihABDAyVYdX5D5vwLgxCn
  ℹ Transaction hash: 0x3d752db29cc106e9ff98b260a90615921eb32471425a29ead8cbb830fb224d8
@@ -120,7 +107,7 @@ This will:
 
 Sample output:
 ```
- ✔ Successfully published app.open.aragonpm.eth v1.1.1: 
+ ✔ Successfully published app.open.aragonpm.eth v1.1.1:
  ℹ Contract address: 0xE636bcA5B95e94F749F63E322a04DB59362299F1
  ℹ Content (ipfs): QmUYv9cjyNVxCyAJGK2YXjkbzh6u4iW2ak81Z9obdefM1q
  ℹ Transaction hash: 0x57864d8efd8d439008621b494b19a3e8f876a8a46b38475f9626802f0a1403c2
