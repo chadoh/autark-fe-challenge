@@ -16,7 +16,7 @@ freeman and slave, patrician and plebeian, lord and serf, guild-master and journ
       },
       coc: {
         title: "code of conduct",
-        body: `## our pledge
+        body: `### our pledge
 
 in the interest of fostering an open and welcoming environment, we as
 contributors and maintainers pledge to making participation in our project and
