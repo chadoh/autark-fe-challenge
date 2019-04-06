@@ -1,11 +1,13 @@
 import React from 'react'
 import {
-  AragonApp,
+  Main,
 } from '@aragon/ui'
 import Aragon, { providers } from '@aragon/client'
 import styled from 'styled-components'
 
-const AppContainer = styled(AragonApp)`
+const Center = styled.div`
+  background: lightgray;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,11 +16,11 @@ const AppContainer = styled(AragonApp)`
 export default class App extends React.Component {
   render () {
     return (
-      <AppContainer>
-        <div>
+      <Main>
+        <Center>
           Hello World
-        </div>
-      </AppContainer>
+        </Center>
+      </Main>
     )
   }
 }

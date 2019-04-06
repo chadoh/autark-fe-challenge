@@ -4,20 +4,20 @@
   "description": "",
   "dependencies": {
     "@aragon/client": "^1.1.0",
-    "@aragon/os": "^4.0.1",
-    "@aragon/ui": "^0.16.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "styled-components": "^3.4.10"
+    "@aragon/os": "^4.1.0",
+    "@aragon/ui": "^0.33.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "styled-components": "^4.0.0"
   },
   "devDependencies": {
-    "@aragon/cli": "^5.4.0",
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-class-properties": "^7.2.3",
-    "@babel/polyfill": "^7.2.5",
-    "@babel/preset-env": "^7.2.3",
+    "@aragon/cli": "^5.6.1",
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/polyfill": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
     "babel-plugin-styled-components": "^1.10.0",
-    "parcel-bundler": "^1.11.0"
+    "parcel-bundler": "^1.12.3"
   },
   "scripts": {
     "start": "npm run start:aragon:ipfs",
