@@ -10,6 +10,7 @@ import {
 } from '@aragon/ui'
 import Markdown from 'react-markdown'
 import styled, { css } from 'styled-components'
+import Hidden from "../Hidden"
 
 const Header = styled.header`
   display: flex;
@@ -23,12 +24,6 @@ const Wrap = styled.div`
   flex-direction: column;
   height: 100%;
   padding: 1em;
-`
-
-const Hidden = styled.div`
-  position: absolute;
-  left: -9000em;
-  top: -9000em;
 `
 
 const ShowOnHover = styled(Hidden)`
@@ -63,8 +58,8 @@ const Buttons = styled.div`
   }
 `
 
-export default function Card({ title, body, update }) {
-  const [editing, rawSetEditing] = useState(false)
+export default function Card({ title, body, editing: editingProp, remove, update }) {
+  const [editing, rawSetEditing] = useState(editingProp || false)
   const [wasEdited, setWasEdited] = useState(false)
 
   const setEditing = val => {
@@ -131,6 +126,18 @@ export default function Card({ title, body, update }) {
       <Buttons>
         <Button mode="strong" type="submit">Save</Button>
         <Button onClick={() => setEditing(false)}>Cancel</Button>
+        <Button
+          mode="strong"
+          emphasis="negative"
+          style={{ float: "right" }}
+          onClick={() => {
+            if (confirm(`Delete "${title}"? This cannot be undone.`)) {
+              remove()
+            }
+          }}
+        >
+          delete
+        </Button>
       </Buttons>
     </Form>
   )
