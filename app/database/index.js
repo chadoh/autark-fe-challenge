@@ -1,3 +1,4 @@
+import set from 'lodash/set';
 import { loadState, saveState } from './localStorage';
 
 const SAVE_SUCCESS = 'DatabaseSaveSuccessEvent';
@@ -16,9 +17,11 @@ class Database {
     return loadState(this.id) || this.initialState;
   }
 
-  setData(newData)  {
+  setData = (path, value) => {
+    const data = this.fetchData()
+    set(data, path, value)
     try {
-      saveState(this.id, newData);
+      saveState(this.id, data);
       window.dispatchEvent(new CustomEvent(SAVE_SUCCESS));
     } catch (err) {
       window.dispatchEvent(new CustomEvent(SAVE_FAIL));

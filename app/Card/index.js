@@ -84,7 +84,7 @@ export default function Card({ title, body, update }) {
       }}
     >
       <Header>
-        <TextInput wide defaultValue={title} name="title" />
+        <TextInput wide defaultValue={title} name="title" autoComplete="off" />
         <Button mode="strong" type="submit">Save</Button>
         <Button onClick={() => setEditing(false)}>Cancel</Button>
       </Header>

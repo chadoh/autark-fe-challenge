@@ -17,30 +17,24 @@ const Grid = styled.div`
 `
 
 export default class App extends React.Component {
-  state = {
-    widgets: db.fetchData().widgets
+  componentDidMount() {
+    db.addSaveSuccessListener(this.rerender);
+  }
+
+  componentWillUnmount() {
+    db.removeSaveSuccessListener(this.rerender);
+  }
+
+  rerender = () => {
+    this.forceUpdate();
   }
 
   updateWidget = (id, title, body) => {
-    const currentData = db.fetchData()
-    db.setData({
-      ...currentData,
-      widgets: {
-        ...currentData.widgets,
-        data: {
-          ...currentData.widgets.data,
-          [id]: {
-            ...currentData.widgets.data[id],
-            title,
-            body,
-          }
-        }
-      }
-    })
+    db.setData(`widgets.data.${id}`, { title, body })
   }
 
   render () {
-    const { widgets } = this.state
+    const { widgets } = db.fetchData()
     return (
       <Main>
         <AppView title="Customize Your DAO">
