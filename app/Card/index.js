@@ -44,6 +44,7 @@ const Form = styled.form`
 const Textarea = styled.textarea`
   flex: 1;
   width: 100%;
+  min-height: 235px;
   border-radius: 3px;
   border: 1px solid ${theme.contentBorder};
 
