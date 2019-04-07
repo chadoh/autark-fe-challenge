@@ -21,6 +21,24 @@ export default class App extends React.Component {
     widgets: db.fetchData().widgets
   }
 
+  updateWidget = (id, title, body) => {
+    const currentData = db.fetchData()
+    db.setData({
+      ...currentData,
+      widgets: {
+        ...currentData.widgets,
+        data: {
+          ...currentData.widgets.data,
+          [id]: {
+            ...currentData.widgets.data[id],
+            title,
+            body,
+          }
+        }
+      }
+    })
+  }
+
   render () {
     const { widgets } = this.state
     return (
@@ -28,7 +46,12 @@ export default class App extends React.Component {
         <AppView title="Customize Your DAO">
           <Grid>
             {widgets.order.map(id =>
-              <Card key={id} id={id} {...widgets.data[id]} />
+              <Card
+                key={id}
+                id={id}
+                {...widgets.data[id]}
+                update={this.updateWidget.bind(null, id)}
+              />
             )}
           </Grid>
         </AppView>
