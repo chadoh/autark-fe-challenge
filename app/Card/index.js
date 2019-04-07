@@ -9,7 +9,7 @@ import {
   theme,
 } from '@aragon/ui'
 import Markdown from 'react-markdown'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 const Header = styled.header`
   display: flex;
@@ -25,12 +25,14 @@ const Wrap = styled.div`
   padding: 1em;
 `
 
-const HiddenButton = styled(Button)`
+const Hidden = styled.div`
   position: absolute;
   left: -9000em;
   top: -9000em;
+`
 
-  ${Wrap}:hover & {
+const ShowOnHover = styled(Hidden)`
+  ${Wrap}:hover &, &:focus-within {
     position: initial;
   }
 `
@@ -44,7 +46,7 @@ const Form = styled.form`
 const Textarea = styled.textarea`
   flex: 1;
   width: 100%;
-  min-height: 235px;
+  min-height: 200px;
   border-radius: 3px;
   border: 1px solid ${theme.contentBorder};
 
@@ -54,19 +56,39 @@ const Textarea = styled.textarea`
   }
 `
 
+const Buttons = styled.div`
+  margin-top: 0.5em;
+  > * {
+    margin-right: 0.5em;
+  }
+`
+
 export default function Card({ title, body, update }) {
-  const [editing, setEditing] = useState(false)
+  const [editing, rawSetEditing] = useState(false)
+  const [wasEdited, setWasEdited] = useState(false)
+
+  const setEditing = val => {
+    if (val) {
+      rawSetEditing(true)
+    } else {
+      rawSetEditing(false)
+      setWasEdited(true)
+    }
+  }
 
   const Show = () => (
     <React.Fragment>
       <Header style={{borderBottom: `1px solid ${theme.contentBorder}`}}>
         <h2><Text size="xxlarge">{title}</Text></h2>
-        <HiddenButton
-          size="small"
-          onClick={() => setEditing(true)}
-        >
-          edit
-        </HiddenButton>
+        <ShowOnHover>
+          <Button
+            size="small"
+            onClick={() => setEditing(true)}
+            ref={button => { if (button && wasEdited) button.focus() }}
+          >
+            edit <Hidden>{title}</Hidden>
+          </Button>
+        </ShowOnHover>
       </Header>
       <Markdown
         renderers={{ link: ({ children, ...props }) => <SafeLink {...props}>{children}</SafeLink>}}
@@ -83,13 +105,33 @@ export default function Card({ title, body, update }) {
         update(title.value, body.value)
         setEditing(false)
       }}
+      onKeyDown={e => {
+        if (e.key === "Escape") {
+          setEditing(false)
+        }
+      }}
     >
       <Header>
-        <TextInput wide defaultValue={title} name="title" autoComplete="off" />
+        <Hidden>
+          <label htmlFor="title">Title</label>
+        </Hidden>
+        <TextInput
+          wide
+          defaultValue={title}
+          id="title"
+          name="title"
+          autoComplete="off"
+          autoFocus
+        />
+      </Header>
+      <Hidden>
+        <label htmlFor="body">Body</label>
+      </Hidden>
+      <Textarea defaultValue={body} id="body" name="body" />
+      <Buttons>
         <Button mode="strong" type="submit">Save</Button>
         <Button onClick={() => setEditing(false)}>Cancel</Button>
-      </Header>
-      <Textarea defaultValue={body} name="body" />
+      </Buttons>
     </Form>
   )
 
