@@ -28,8 +28,14 @@ const Wrap = styled.div`
   position: relative;
 `
 
-const ShowOnHover = styled(Hidden)`
-  ${Wrap}:hover &, &:focus-within {
+const ShowOnFocus = styled(Hidden)`
+  &:focus-within {
+    position: initial;
+  }
+`
+
+const ShowOnHover = styled(ShowOnFocus)`
+  ${Wrap}:hover & {
     position: initial;
   }
 `
@@ -55,15 +61,20 @@ const Textarea = styled.textarea`
 
 const Buttons = styled.div`
   margin-top: 0.5em;
+  display: flex;
   > * {
     margin-right: 0.5em;
-    &:last-child { margin-right: 0 }
+    &:last-child {
+      margin-right: 0;
+      margin-left: auto;
+    }
   }
 `
 
-export default function Card({ id, title, body, editing: editingProp, remove, update }) {
+export default function Card({ id, title, body, editing: editingProp, remove, update, moveUp }) {
   const [editing, rawSetEditing] = useState(editingProp || false)
   const [wasEdited, setWasEdited] = useState(false)
+  const [wasMoved, setWasMoved] = useState(false)
 
   const setEditing = val => {
     if (val) {
@@ -71,6 +82,7 @@ export default function Card({ id, title, body, editing: editingProp, remove, up
     } else {
       rawSetEditing(false)
       setWasEdited(true)
+      setWasMoved(false)
     }
   }
 
@@ -127,12 +139,33 @@ export default function Card({ id, title, body, editing: editingProp, remove, up
       </Hidden>
       <Textarea defaultValue={body} id="body" name="body" />
       <Buttons>
-        <Button mode="strong" type="submit">Save</Button>
-        <Button onClick={() => setEditing(false)}>Cancel</Button>
+        <Button size="small" mode="strong" type="submit">Save</Button>
+        <Button size="small" onClick={() => setEditing(false)}>Cancel</Button>
+        {moveUp &&
+          <ShowOnFocus>
+            <Button
+              size="small"
+              onClick={() => {
+                moveUp()
+                setWasMoved(true)
+              }}
+              ref={button => {
+                if (button && wasMoved) {
+                  // set timeout to allow reorder rendering to finish
+                  setTimeout(() => { button.focus() })
+                }
+              }}
+              title="Move Up"
+            >
+              <span aria-hidden="true">^</span>
+              <Hidden>Move Up</Hidden>
+            </Button>
+          </ShowOnFocus>
+        }
         <Button
+          size="small"
           mode="strong"
           emphasis="negative"
-          style={{ float: "right" }}
           onClick={() => {
             if (confirm(`Delete "${title}"? This cannot be undone.`)) {
               remove()

@@ -62,6 +62,13 @@ export default class App extends React.Component {
     db.setData({ "widgets.order": order })
   }
 
+  moveWidgetTo = (id, index) => {
+    const { order } = db.fetchData().widgets
+    const prevId = order[index]
+    order.splice(index, 2, id, prevId)
+    db.setData({ "widgets.order": order })
+  }
+
   render () {
     const { widgets } = db.fetchData()
     return (
@@ -76,13 +83,14 @@ export default class App extends React.Component {
               forceFallback: true,
             }}
           >
-            {widgets.order.map(id =>
+            {widgets.order.map((id, index) =>
               <Card
                 key={id}
                 id={id}
                 {...widgets.data[id]}
                 update={this.updateWidget.bind(null, id)}
                 remove={this.removeWidget.bind(null, id)}
+                moveUp={index > 0 && this.moveWidgetTo.bind(null, id, index - 1)}
               />
             )}
           </Sortable>
