@@ -11,6 +11,7 @@ import {
 import Markdown from 'react-markdown'
 import styled, { css } from 'styled-components'
 import Hidden from "../Hidden"
+import DragHandle from "./DragHandle"
 
 const Header = styled.header`
   display: flex;
@@ -24,6 +25,7 @@ const Wrap = styled.div`
   flex-direction: column;
   height: 100%;
   padding: 1em;
+  position: relative;
 `
 
 const ShowOnHover = styled(Hidden)`
@@ -55,10 +57,11 @@ const Buttons = styled.div`
   margin-top: 0.5em;
   > * {
     margin-right: 0.5em;
+    &:last-child { margin-right: 0 }
   }
 `
 
-export default function Card({ title, body, editing: editingProp, remove, update }) {
+export default function Card({ id, title, body, editing: editingProp, remove, update }) {
   const [editing, rawSetEditing] = useState(editingProp || false)
   const [wasEdited, setWasEdited] = useState(false)
 
@@ -143,9 +146,15 @@ export default function Card({ title, body, editing: editingProp, remove, update
   )
 
   return (
-    <AragonCard height="initial" width="initial">
+    <AragonCard data-id={id} height="initial" width="initial">
       <Wrap>
-        {editing ? <Edit /> : <Show />}
+        {editing
+          ? <React.Fragment>
+              <Edit />
+              <DragHandle />
+            </React.Fragment>
+          : <Show />
+        }
       </Wrap>
     </AragonCard>
   )

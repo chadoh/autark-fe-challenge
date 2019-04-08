@@ -6,6 +6,7 @@ import {
 } from '@aragon/ui'
 import Aragon, { providers } from '@aragon/client'
 import styled from 'styled-components'
+import Sortable from 'react-sortablejs'
 import createDatabase, { uuid } from './database'
 import Card from './Card'
 import Hidden from './Hidden'
@@ -16,13 +17,6 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(282px, 1fr));
   grid-gap: 1em;
-`
-
-const EmptyCard = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
 `
 
 export default class App extends React.Component {
@@ -64,12 +58,24 @@ export default class App extends React.Component {
     })
   }
 
+  sortWidgets = order => {
+    db.setData({ "widgets.order": order })
+  }
+
   render () {
     const { widgets } = db.fetchData()
     return (
       <Main>
         <AppView title="Customize Your DAO">
-          <Grid>
+          <Sortable
+            tag={Grid}
+            onChange={order => this.sortWidgets(order)}
+            options={{
+              animation: 150,
+              handle: ".drag-handle",
+              forceFallback: true,
+            }}
+          >
             {widgets.order.map(id =>
               <Card
                 key={id}
@@ -79,14 +85,14 @@ export default class App extends React.Component {
                 remove={this.removeWidget.bind(null, id)}
               />
             )}
-            <EmptyCard>
-              <Button mode="secondary" onClick={this.addWidget}>
-                <span aria-hidden="true">+</span>
-                Add Another
-                <Hidden>Section</Hidden>
-              </Button>
-            </EmptyCard>
-          </Grid>
+          </Sortable>
+          <div style={{ marginTop: "1em" }}>
+            <Button mode="secondary" onClick={this.addWidget}>
+              <span aria-hidden="true">+</span>
+              Add Another
+              <Hidden>Section</Hidden>
+            </Button>
+          </div>
         </AppView>
       </Main>
     )
