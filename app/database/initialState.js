@@ -36,7 +36,9 @@ appearance, race, religion, or sexual identity and orientation.`,
       },
       [ids[3]]: {
         title: "contact info",
-        body: "[@chadoh](https://twitter.com/chadoh)",
+        body: `![Autark Labs logo](https://pbs.twimg.com/profile_images/1083445444246568961/ASkyvpEo_400x400.jpg)
+
+[@autarklabs](https://twitter.com/autarklabs)`,
       }
     },
     order: ids,
