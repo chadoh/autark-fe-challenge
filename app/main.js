@@ -3,7 +3,15 @@ import '@babel/polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Aragon, { providers } from '@aragon/client'
+import { createGlobalStyle } from 'styled-components'
 import App from './App'
+
+// this is necessary because aragonUI uses a CSS reset, rather than a normalizer
+const GlobalStyle = createGlobalStyle`
+  img {
+    max-width: 100%;
+  }
+`
 
 class ConnectedApp extends React.Component {
   state = {
@@ -49,7 +57,12 @@ class ConnectedApp extends React.Component {
     window.parent.postMessage({ from: 'app', name, value }, '*')
   }
   render() {
-    return <App {...this.state} />
+    return (
+      <React.Fragment>
+        <GlobalStyle />
+        <App {...this.state} />
+      </React.Fragment>
+    )
   }
 }
 ReactDOM.render(
