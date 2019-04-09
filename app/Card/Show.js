@@ -11,19 +11,21 @@ import {
   ShowOnHover,
 } from "./styled"
 
-const Show = ({ title, body, setEditing, wasEdited }) => (
+const Show = ({ title, body, allowEdit, setEditing, wasEdited }) => (
   <React.Fragment>
     <Header>
       <h2><Text size="xxlarge">{title}</Text></h2>
-      <ShowOnHover>
-        <Button
-          size="small"
-          onClick={() => setEditing(true)}
-          ref={button => { if (button && wasEdited) button.focus() }}
-        >
-          edit <Hidden>{title}</Hidden>
-        </Button>
-      </ShowOnHover>
+      {allowEdit &&
+        <ShowOnHover>
+          <Button
+            size="small"
+            onClick={() => setEditing(true)}
+            ref={button => { if (button && wasEdited) button.focus() }}
+          >
+            edit <Hidden>{title}</Hidden>
+          </Button>
+        </ShowOnHover>
+      }
     </Header>
     <Markdown
       renderers={{ link: ({ children, ...props }) => <SafeLink {...props}>{children}</SafeLink>}}

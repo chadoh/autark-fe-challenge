@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  AppBar,
   AppView,
   Button,
   Main,
@@ -7,6 +8,7 @@ import {
 import Aragon, { providers } from '@aragon/client'
 import styled from 'styled-components'
 import Sortable from 'react-sortablejs'
+import * as auth from './utils/auth'
 import createDatabase, { uuid } from './database'
 import Card from './Card'
 import Hidden from './Hidden'
@@ -26,13 +28,38 @@ const Grid = styled.div`
   grid-gap: 1em;
 `
 
+const Login = () => (
+  <Button mode="strong" onClick={auth.login}>
+    Sign In
+  </Button>
+)
+
+const Logout = () => (
+  <Button onClick={auth.logout}>
+    Sign Out
+  </Button>
+)
+
 export default class App extends React.Component {
+  state = {}
+
   componentDidMount() {
+    this.checkPermissions()
     db.addSaveSuccessListener(this.rerender);
+    auth.addListener(this.checkPermissions)
   }
 
   componentWillUnmount() {
     db.removeSaveSuccessListener(this.rerender);
+    auth.removeListener(this.checkPermissions)
+  }
+
+  checkPermissions = () => {
+    const currentUser = auth.getCurrentUser()
+    this.setState({
+      currentUser: currentUser,
+      isModerator: auth.isMod(currentUser),
+    })
   }
 
   rerender = () => {
@@ -78,9 +105,17 @@ export default class App extends React.Component {
 
   render () {
     const { widgets } = db.fetchData()
+    const { currentUser, isModerator } = this.state
     return (
       <Main>
-        <AppView title="Customize Your DAO">
+        <AppView
+          appBar={
+            <AppBar
+              title="Our DAO"
+              endContent={currentUser ? <Logout /> : <Login />}
+            />
+          }
+        >
           <Sortable
             tag={Grid}
             onChange={order => this.sortWidgets(order)}
@@ -95,6 +130,7 @@ export default class App extends React.Component {
                 key={id}
                 id={id}
                 {...widgets.data[id]}
+                allowEdit={isModerator}
                 update={this.updateWidget.bind(null, id)}
                 remove={this.removeWidget.bind(null, id)}
                 moveUp={index > 0 && this.moveWidgetTo.bind(null, id, index - 1)}

@@ -4,8 +4,22 @@ import { DragHandle, Wrap } from "./styled"
 import Show from "./Show"
 import Edit from "./Edit"
 
-export default function Card({ id, title, body, editing: editingProp, remove, update, moveUp }) {
-  const [editing, rawSetEditing] = useState(editingProp || false)
+export default function Card({
+  id,
+  title,
+  body,
+
+  allowEdit,
+  editing: editingProp,
+  moveUp,
+  remove,
+  update,
+}) {
+  const [editing, rawSetEditing] = useState(
+    allowEdit
+      ? editingProp || false
+      : false
+  )
   const [wasEdited, setWasEdited] = useState(false)
   const [wasMoved, setWasMoved] = useState(false)
 
@@ -22,7 +36,7 @@ export default function Card({ id, title, body, editing: editingProp, remove, up
   return (
     <AragonCard data-id={id} height="initial" width="initial">
       <Wrap>
-        {editing
+        {allowEdit && editing
           ? <React.Fragment>
               <Edit
                 body={body}
@@ -38,6 +52,7 @@ export default function Card({ id, title, body, editing: editingProp, remove, up
             </React.Fragment>
           : <Show
               body={body}
+              allowEdit={allowEdit}
               setEditing={setEditing}
               title={title}
               wasEdited={wasEdited}
