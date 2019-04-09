@@ -15,7 +15,14 @@ const db = createDatabase();
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(282px, 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(
+      /* min supported screen width - page margins from aragonUI - borders - padding */
+      calc(320px - 60px - 2px - 2em),
+      1fr
+    )
+  );
   grid-gap: 1em;
 `
 
