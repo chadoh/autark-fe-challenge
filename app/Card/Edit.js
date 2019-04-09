@@ -38,6 +38,7 @@ const Edit = ({
   >
     <Header>
       <Hidden>
+        <h2>Edit {title}</h2>
         <label htmlFor="title">Title</label>
       </Hidden>
       <TextInput
