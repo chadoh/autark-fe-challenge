@@ -134,13 +134,15 @@ export default class App extends React.Component {
               />
             )}
           </Sortable>
-          <div style={{ marginTop: "1em" }}>
-            <Button mode="secondary" onClick={this.addWidget}>
-              <span aria-hidden="true">+</span>
-              Add Another
-              <Hidden>Section</Hidden>
-            </Button>
-          </div>
+          {isModerator &&
+            <div style={{ marginTop: "1em" }}>
+              <Button mode="secondary" onClick={this.addWidget}>
+                <span aria-hidden="true">+</span>
+                Add Another
+                <Hidden>Section</Hidden>
+              </Button>
+            </div>
+          }
         </AppView>
       </Main>
     )
